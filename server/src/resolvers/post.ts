@@ -11,15 +11,13 @@ import {
   FieldResolver,
   Root,
   ObjectType,
-  Info,
-} from "type-graphql";
-import { Post } from "../entities/Post";
-import { MyContext } from "../types";
-import { isAuth } from "../middleware/isAuth";
-import { getConnection } from "typeorm";
-import { Updoot } from "../entities/Updoot";
-import { tmpdir } from "os";
-import { User } from "../entities/User";
+} from 'type-graphql';
+import { Post } from '../entities/Post';
+import { MyContext } from '../types';
+import { isAuth } from '../middleware/isAuth';
+import { getConnection } from 'typeorm';
+import { Updoot } from '../entities/Updoot';
+import { User } from '../entities/User';
 
 @InputType()
 class PostInput {
@@ -69,15 +67,17 @@ export class PostResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async vote(
-    @Arg("postId", () => Int) postId: number,
-    @Arg("value", () => Int) value: number,
+    @Arg('postId', () => Int) postId: number,
+    @Arg('value', () => Int) value: number,
     @Ctx() { req }: MyContext
   ) {
     const isUpdoot = value !== -1;
     const realValue = isUpdoot ? 1 : -1;
     const { userId } = req.session;
 
-    const updoot = await Updoot.findOne({ where: { postId, userId } });
+    const updoot = await Updoot.findOne({
+      where: { postId, userId },
+    });
 
     // the user has voted on the post before
     // and they are changing their vote
@@ -127,9 +127,9 @@ export class PostResolver {
 
   @Query(() => PaginatedPosts)
   async posts(
-    @Arg("limit", () => Int) limit: number,
-    @Arg("cursor", () => String, { nullable: true }) cursor: string | null,
-    @Ctx() { req }: MyContext
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true })
+    cursor: string | null
   ): Promise<PaginatedPosts> {
     // 20 -> 21
     const realLimit = Math.min(50, limit);
@@ -145,7 +145,7 @@ export class PostResolver {
       `
     select p.*
     from post p
-    ${cursor ? `where p."createdAt" < $2` : ""}
+    ${cursor ? `where p."createdAt" < $2` : ''}
     order by p."createdAt" DESC
     limit $1
     `,
@@ -175,14 +175,14 @@ export class PostResolver {
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
+  post(@Arg('id', () => Int) id: number): Promise<Post | undefined> {
     return Post.findOne(id);
   }
 
   @Mutation(() => Post)
   @UseMiddleware(isAuth)
   async createPost(
-    @Arg("input") input: PostInput,
+    @Arg('input') input: PostInput,
     @Ctx() { req }: MyContext
   ): Promise<Post> {
     return Post.create({
@@ -194,9 +194,9 @@ export class PostResolver {
   @Mutation(() => Post, { nullable: true })
   @UseMiddleware(isAuth)
   async updatePost(
-    @Arg("id", () => Int) id: number,
-    @Arg("title") title: string,
-    @Arg("text") text: string,
+    @Arg('id', () => Int) id: number,
+    @Arg('title') title: string,
+    @Arg('text') text: string,
     @Ctx() { req }: MyContext
   ): Promise<Post | null> {
     const result = await getConnection()
@@ -207,7 +207,7 @@ export class PostResolver {
         id,
         creatorId: req.session.userId,
       })
-      .returning("*")
+      .returning('*')
       .execute();
 
     return result.raw[0];
@@ -216,7 +216,7 @@ export class PostResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deletePost(
-    @Arg("id", () => Int) id: number,
+    @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext
   ): Promise<boolean> {
     // not cascade way

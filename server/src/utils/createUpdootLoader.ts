@@ -1,6 +1,5 @@
-import { User } from "../entities/User";
-import { Updoot } from "../entities/Updoot";
-import DataLoader from "dataloader";
+import { Updoot } from '../entities/Updoot';
+import DataLoader from 'dataloader';
 
 // [{postId: 5, userId: 10}]
 // [{postId: 5, userId: 10, value: 1}]
@@ -10,7 +9,9 @@ export const createUpdootLoader = () =>
       const updoots = await Updoot.findByIds(keys as any);
       const updootIdsToUpdoot: Record<string, Updoot> = {};
       updoots.forEach((updoot) => {
-        updootIdsToUpdoot[`${updoot.userId}|${updoot.postId}`] = updoot;
+        updootIdsToUpdoot[
+          `${updoot.userId}|${updoot.postId}`
+        ] = updoot;
       });
 
       return keys.map(
