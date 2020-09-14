@@ -1,1 +1,10 @@
-node_modules
+**/dist
+**/node_modules
+
+**/.idea
+**/.vscode
+
+**/.env
+**/.env.production
+**/deploy.sh
+**/ormconfig.json
