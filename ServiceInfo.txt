@@ -1,0 +1,77 @@
+hummus postgres service information
+       Config dir:          /var/lib/dokku/services/postgres/hummus/data
+       Data dir:            /var/lib/dokku/services/postgres/hummus/data
+       Dsn:                 postgres://postgres:1c2ab9c4b2c7239a79d0d3fc5b196664@dokku-postgres-hummus:5432/hummus
+       Exposed ports:       -
+       Id:                  750f62f8ec3f0984e12dd3935abe86df50183c5e06f45d220320473d96eaee03
+       Internal ip:         172.17.0.2
+       Links:               -
+       Service root:        /var/lib/dokku/services/postgres/hummus
+       Status:              running
+       Version:             postgres:11.6
+
+
+
+
+
+       Setting config vars
+       DATABASE_URL:  postgres://postgres:1c2ab9c4b2c7239a79d0d3fc5b196664@dokku-postgres-hummus:5432/hummus
+-----> Restarting app api
+ !     App api has not been deployed
+
+ Redis container created: olive
+=====> olive redis service information
+       Config dir:          /var/lib/dokku/services/redis/olive/config
+       Data dir:            /var/lib/dokku/services/redis/olive/data
+       Dsn:                 redis://olive:b268f0bfdebedfa095352f2ab8b8571d1f846244607240567a2aa74c072f600e@dokku-redis-olive:6379
+       Exposed ports:       -
+       Id:                  10f3e2eb2e3de3576d3fe969f9fe90865b48d388bf471de5773cea0eb5bfede8
+       Internal ip:         172.17.0.3
+       Links:               -
+       Service root:        /var/lib/dokku/services/redis/olive
+       Status:              running
+       Version:             redis:5.0.7
+
+       Setting config vars
+       REDIS_URL:  redis://olive:b268f0bfdebedfa095352f2ab8b8571d1f846244607240567a2aa74c072f600e@dokku-redis-olive:6379
+-----> Restarting app api
+ !     App api has not been deployed
+
+ docker container list
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+10f3e2eb2e3d        redis:5.0.7         "docker-entrypoint.s…"   About a minute ago   Up About a minute   6379/tcp            dokku.redis.olive
+750f62f8ec3f        postgres:11.6       "docker-entrypoint.s…"   5 minutes ago        Up 5 minutes        5432/tcp            dokku.postgres.hummus
+
+
+
+=====> Renaming container (324707744c44) upbeat_neumann to api.web.1
+=====> Application deployed:
+       http://api.dev2020-dokku
+       http://api.dev2020-dokku:8080
+
+
+       root@dev2020-dokku:~# dokku domains:report api
+=====> api domains information
+       Domains app enabled:           true
+       Domains app vhosts:            api.isawit.live
+       Domains global enabled:        true
+       Domains global vhosts:         isawit.live
+root@dev2020-dokku:~#
+
+
+root@dev2020-dokku:~# dokku proxy:ports-add api http:80:8080
+-----> Configuring api.isawit.live...(using built-in template)
+-----> Creating http nginx.conf
+-----> Running nginx-pre-reload
+       Reloading nginx
+root@dev2020-dokku:~# dokku proxy:ports api
+-----> Port mappings for api
+-----> scheme             host port                 container port
+http                      8080                      8080
+http                      80                        8080
+root@dev2020-dokku:~#
+
+
+
+
+
