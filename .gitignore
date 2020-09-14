@@ -1,3 +1,10 @@
+.vscode
+.env
+.env.production
+
+node_modules
+ServiceInfo.txt
+
 **/dist
 **/node_modules
 
