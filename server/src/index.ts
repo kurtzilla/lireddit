@@ -1,37 +1,43 @@
-import 'reflect-metadata';
-import 'dotenv-safe/config';
-import { __prod__, COOKIE_NAME } from './constants';
-import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import connectRedis from 'connect-redis';
+import cors from 'cors';
+import 'dotenv-safe/config';
+import express from 'express';
+import session from 'express-session';
+import Redis from 'ioredis';
+import path from 'path';
+import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
+import { createConnection } from 'typeorm';
+import { COOKIE_NAME, __prod__ } from './constants';
+import { Post } from './entities/Post';
+import { Updoot } from './entities/Updoot';
+import { User } from './entities/User';
 import { HelloResolver } from './resolvers/hello';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
-import Redis from 'ioredis';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import cors from 'cors';
-import { createConnection } from 'typeorm';
-import { Post } from './entities/Post';
-import { User } from './entities/User';
-import path from 'path';
-import { Updoot } from './entities/Updoot';
-import { createUserLoader } from './utils/createUserLoader';
 import { createUpdootLoader } from './utils/createUpdootLoader';
+import { createUserLoader } from './utils/createUserLoader';
 import { int } from './utils/int';
+import { Show } from './entities/Show';
+import { ShowResolver } from './resolvers/show';
 
 const main = async () => {
   const conn = await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: true,
-    // synchronize: true,
+    synchronize: true,
     migrations: [path.join(__dirname, './migrations/*')],
-    entities: [Post, User, Updoot],
+    entities: [Post, Show, User, Updoot],
   });
   await conn.runMigrations();
 
+  // await Show.delete({});
   // await Post.delete({});
+  // console.log('deleting');
+
+  // console.log('deleted');
 
   const app = express();
   const RedisStore = connectRedis(session);
@@ -67,7 +73,12 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver],
+      resolvers: [
+        HelloResolver,
+        PostResolver,
+        ShowResolver,
+        UserResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }) => ({
