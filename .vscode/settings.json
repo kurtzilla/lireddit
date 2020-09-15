@@ -1,8 +1,0 @@
-{
-    "files.exclude": {
-        "**/node_modules": true
-    },
-    "javascript.preferences.importModuleSpecifier": "relative",
-    "typescript.preferences.importModuleSpecifier": "relative",
-    "git.ignoreLimitWarning": true
-}
