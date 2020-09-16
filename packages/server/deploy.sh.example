@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo Please include a version?
+read VERSION
+
+docker build -t <account>/<project>:$VERSION .
+docker push <account>/<project>:$VERSION
+
+ssh <user>@<ip-address> "docker pull <account>/<project>:$VERSION && docker tag <account>/<project>:$VERSION dokku/<dokku-tag>:$VERSION && dokku deploy <dokku-tag> $VERSION"
