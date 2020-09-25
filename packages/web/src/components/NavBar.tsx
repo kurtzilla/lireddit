@@ -3,13 +3,13 @@ import { Box, Link, Flex, Button, Heading } from '@chakra-ui/core';
 import NextLink from 'next/link';
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 import { isServer } from '../utils/isServer';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const { data, loading } = useMeQuery({

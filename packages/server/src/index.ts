@@ -21,6 +21,7 @@ import { createUserLoader } from './utils/createUserLoader';
 import { int } from './utils/int';
 import { Show } from './entities/Show';
 import { ShowResolver } from './resolvers/show';
+import { Enums } from '@lireddit/library';
 
 const main = async () => {
   const conn = await createConnection({
@@ -33,6 +34,7 @@ const main = async () => {
   });
   await conn.runMigrations();
 
+  Enums.Days.Sunday;
   // await Show.delete({});
   // await Post.delete({});
   // console.log('deleting');

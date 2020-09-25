@@ -76,6 +76,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   vote: Scalars['Boolean'];
   createPost: Post;
+  createApostleJohn: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
   changePassword: UserResponse;
@@ -94,6 +95,11 @@ export type MutationVoteArgs = {
 
 
 export type MutationCreatePostArgs = {
+  input: PostInput;
+};
+
+
+export type MutationCreateApostleJohnArgs = {
   input: PostInput;
 };
 

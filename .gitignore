@@ -16,3 +16,5 @@ ServiceInfo.txt
 **/.env.production
 **/deploy.sh
 **/ormconfig.json
+
+OBS/

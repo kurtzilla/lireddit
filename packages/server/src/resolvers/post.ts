@@ -191,6 +191,18 @@ export class PostResolver {
     }).save();
   }
 
+  @Mutation(() => Post)
+  @UseMiddleware(isAuth)
+  async createApostleJohn(
+    @Arg('input') input: PostInput,
+    @Ctx() { req }: MyContext
+  ): Promise<Post> {
+    return Post.create({
+      ...input,
+      creatorId: req.session.userId,
+    }).save();
+  }
+
   @Mutation(() => Post, { nullable: true })
   @UseMiddleware(isAuth)
   async updatePost(
